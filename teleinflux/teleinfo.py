@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 from typing import Optional, Dict, Any, Union
 
@@ -116,7 +117,12 @@ class TeleinfoReader:
                 if started:
                     # End of frame
                     if b == 3:
-                        return self._parse_frame(bytes(frame_buffer))
+                        try:
+                            return self._parse_frame(bytes(frame_buffer))
+                        except Exception as ex:
+                            logging.warning(f'Failed to parse frame, skipped: {ex}')
+                            frame_buffer.clear()
+                            started = False
                     else:
                         frame_buffer.append(b)
 

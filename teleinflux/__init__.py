@@ -8,7 +8,7 @@ from typing import Dict, Any
 from influxdb import InfluxDBClient
 from influxdb.exceptions import InfluxDBServerError
 
-from teleinflux.teleinfo import TeleinfoReader, TeleinfoException, TeleinfoFrame
+from teleinflux.teleinfo import TeleinfoReader, TeleinfoException
 
 
 class Teleinflux:
@@ -56,7 +56,7 @@ class Teleinflux:
         self._running = False
 
     def run(self):
-        logging.info(f'Running')
+        logging.info('Running')
 
         if not self._influx_client.ping():
             logging.error('Failed to ping InfluxDB')
@@ -83,13 +83,13 @@ class Teleinflux:
                     continue
 
                 if not frame:
-                    logging.warning(f'Nothing to read on input stream')
+                    logging.warning('Nothing to read on input stream')
                     break
 
                 logging.debug(f'Read frame: {frame}')
                 self._write_measurement('teleinfo', frame.utc_time.isoformat(), frame.format_fields())
 
-        logging.info(f'Done')
+        logging.info('Done')
 
     def _write_measurement(
         self, measurement_name: str, utc_time: str, fields: Dict[str, Any], tags: Dict[str, Any] = None
