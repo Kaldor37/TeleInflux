@@ -1,0 +1,12 @@
+[Unit]
+Description=TeleInflux service
+After=influxd.service
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+ExecStart=/opt/TeleInflux/venv/bin/python -m teleinflux
+
+[Install]
+WantedBy=multi-user.target
