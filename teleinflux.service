@@ -1,12 +1,15 @@
 [Unit]
 Description=TeleInflux service
-After=influxd.service
+Requires=network-online.target
+Requires=influxd.service
 
 [Service]
 Type=simple
 User=pi
 Group=pi
+ExecStartPre=/bin/sleep 15
 ExecStart=/opt/TeleInflux/venv/bin/python -m teleinflux
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
